@@ -5,7 +5,7 @@
  * @returns {Promise<string>} The formatted message as Markdown.
  */
 export async function formatDiscordMessage(rawMessage, options) {
-  const backendUrl = 'https://discord-formatterr.onrender.com/';
+  const backendUrl = 'https://discord-formatterr.onrender.com/ask-gemini';
 
   // Build prompt text with options
   const prompt = `
