@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const rawMessageInput = document.getElementById('rawMessageInput');
     const formatButton = document.getElementById('formatButton');
     const buttonText = document.getElementById('buttonText');
-    
+
     // Options
     const useEmojisCheckbox = document.getElementById('useEmojis');
     const addHashtagsCheckbox = document.getElementById('addHashtags');
