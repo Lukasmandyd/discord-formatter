@@ -1,36 +1,14 @@
 /**
- * Calls your backend Gemini proxy API to format a message.
+ * Calls your backend Gemini proxy API to format a Discord message.
  * @param {string} rawMessage The user's original message.
- * @param {object} options The formatting options.
- * @returns {Promise<string>} The formatted message as a Markdown string.
+ * @param {object} options Formatting options selected by the user.
+ * @returns {Promise<string>} The formatted message as Markdown.
  */
 export async function formatDiscordMessage(rawMessage, options) {
-    const backendUrl = 'https://gemini-backend-2fgy.onrender.com/ask-gemini';
+  const backendUrl = 'https://gemini-backend-2fgy.onrender.com/ask-gemini';
 
-    try {
-        const response = await fetch(backendUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt: buildPrompt(rawMessage, options) })
-        });
-
-        const data = await response.json();
-        if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
-            return data.candidates[0].content.parts[0].text;
-        } else {
-            throw new Error("No valid response from Gemini backend.");
-        }
-    } catch (error) {
-        console.error("Error contacting backend:", error);
-        throw new Error("Something went wrong with the backend. Check your connection or try again later.");
-    }
-}
-
-/**
- * Builds a Gemini prompt from message + options
- */
-function buildPrompt(rawMessage, options) {
-    return `
+  // Build prompt text with options
+  const prompt = `
 You are an expert at formatting messages for Discord. Your task is to take a raw text message and reformat it to be engaging and clear, using Discord's markdown.
 
 Please adhere to the following formatting options:
@@ -49,4 +27,33 @@ Here is the raw message:
 ---
 ${rawMessage}
 ---`;
+
+  try {
+    const response = await fetch(backendUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Backend error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    // Debug: log full backend response
+    console.log("Gemini backend response:", data);
+
+    // Safely extract the formatted text
+    const formattedText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!formattedText) {
+      throw new Error('No valid response from Gemini backend.');
+    }
+
+    return formattedText;
+  } catch (error) {
+    console.error('Error contacting backend:', error);
+    throw new Error('Failed to get a formatted message. Please try again later.');
+  }
 }
