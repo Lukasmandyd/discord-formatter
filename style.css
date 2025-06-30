@@ -1,0 +1,47 @@
+/*
+  This file can be used for any custom CSS that is not covered by Tailwind CSS.
+*/
+
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #99aab5; /* discord-light */
+}
+
+.loader {
+    border: 4px solid #2c2f33; /* discord-dark */
+    border-top: 4px solid #5865f2; /* discord-blurple */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Styling for markdown output from Gemini */
+#formattedMessageOutput h1,
+#formattedMessageOutput h2,
+#formattedMessageOutput h3 {
+    color: white;
+    border-bottom: 1px solid #4f545c;
+    padding-bottom: 0.3em;
+}
+
+#formattedMessageOutput strong {
+    color: white;
+}
